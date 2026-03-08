@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home</title>
+    <style>
+        :root { --bg: #0d1117; --card: #161b22; --text: #c9d1d9; --accent: #58a6ff; }
+        body { background: var(--bg); color: var(--text); font-family: system-ui; margin: 0; padding: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 20px; }
+        .card { background: var(--card); padding: 20px; border-radius: 12px; cursor: pointer; transition: 0.2s; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .card.on { border: 2px solid var(--accent); }
+        .icon { font-size: 32px; margin-bottom: 10px; }
+        .name { font-weight: 600; }
+        .status { font-size: 12px; opacity: 0.7; margin-top: 5px; }
+        h1 { margin: 0; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        .time { font-size: 14px; opacity: 0.7; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏠 Smart Home</h1>
+        <div class="time" id="time"></div>
+    </div>
+    <div class="grid" id="devices"></div>
+    <script>
+        const devices = [
+            { id: 'light.stue', name: 'Stue', icon: '💡', on: false },
+            { id: 'light.kjokken', name: 'Kjøkken', icon: '💡', on: false },
+            { id: 'switch.terrasse', name: 'Terassekontakt', icon: '🔌', on: false },
+            { id: 'climate.termostat', name: 'Termostat', icon: '🌡️', on: true },
+            { id: 'lock.dor', name: 'Hoveddør', icon: '🔒', on: true },
+        ];
+        
+        const grid = document.getElementById('devices');
+        devices.forEach(d => {
+            const card = document.createElement('div');
+            card.className = `card ${d.on ? 'on' : ''}`;
+            card.innerHTML = `<div class="icon">${d.icon}</div><div class="name">${d.name}</div><div class="status">${d.on ? 'On' : 'Off'}</div>`;
+            card.onclick = () => { d.on = !d.on; card.className = `card ${d.on ? 'on' : ''}`; card.querySelector('.status').textContent = d.on ? 'On' : 'Off'; };
+            grid.appendChild(card);
+        });
+        
+        setInterval(() => document.getElementById('time').textContent = new Date().toLocaleTimeString(), 1000);
+    </script>
+</body>
+</html>
